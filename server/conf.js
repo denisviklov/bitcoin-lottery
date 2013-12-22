@@ -1,0 +1,1 @@
+CONF = {is_demo: false};
