@@ -7,15 +7,27 @@ if (Meteor.isClient) {
   Meteor.subscribe('lastregistered');
   var LastRegisteredUsers = new Meteor.Collection('lastusers');
 
+  Meteor.subscribe('lastcombinations');
+  var LastCombinations = new Meteor.Collection('lastcombinations');
+
   Template.navBar.jackpot = function(){
     return Jackpot.findOne({});
   };
   Template.home.jackpot = function(){
     return Jackpot.findOne({});
   };
+  Template.home.helpers({
+    prettyJackpot: function(jackpot){
+      return String(jackpot).slice(0, 5);
+    },
+  });
   Template.home.lastusers = function(){
     return LastRegisteredUsers.find({});
   };
+  Template.home.lastcombinations = function(){
+    return LastCombinations.find({});
+  };
+
   Template.signUp.events({
     'submit': function(event){
       event.preventDefault();

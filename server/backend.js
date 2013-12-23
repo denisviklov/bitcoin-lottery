@@ -14,6 +14,16 @@ var userHandler = userQuery.observeChanges({
 	},
 });
 
+var combinationQuery = LastCombinations.find({});
+var combinationHandler = combinationQuery.observeChanges({
+	added: function(combination, time){
+		if(LastCombinations.find().count() > 5){
+			var lastInSet = LastCombinations.findOne({}, {sort:{time: 1}, limit: 1});
+			id = LastCombinations.remove({_id: lastInSet._id});
+		}
+	},
+});
+
 Meteor.startup(function(){
 	if(!Jackpot.findOne())
 		Jackpot.insert({value: 1000});
@@ -25,6 +35,10 @@ Meteor.publish('jackpotPub', function(){
 
 Meteor.publish('lastregistered', function(){
 	return LastRegisteredUsers.find({}, {sort:{time: -1}, limit: 5});
+});
+
+Meteor.publish('lastcombinations', function(){
+	return LastCombinations.find({}, {sort:{time: -1}, limit: 5});
 });
 
 Meteor.methods({

@@ -19,7 +19,8 @@
 
 			<div class="col-md-12">
 				<center><h1><a href="/signUp">SIGN UP</a></h1></center>
-				<h1>Jackpot - {{jackpot.value}}&#3647;</h1>
+				<center><h2><a href="/signUp">LOGIN</a></h2></center>
+				<h1>Jackpot - {{prettyJackpot jackpot.value}}&#3647;</h1>
 			</div>
 			<div class="col-md-3">
 				<center><span>Last 5 registered</span></center>
@@ -31,7 +32,7 @@
 					<tbody>
 						{{#each lastusers}}
 						<tr>
-							<td>{{time}}</td>
+							<td>{{dateFormat time}}</td>
 							<td>{{username}}</td>
 						</tr>
 						{{/each}}
@@ -46,10 +47,12 @@
 						<th>combination</th>
 					</thead>
 					<tbody>
+						{{#each lastcombinations}}
 						<tr>
-							<td>20/11/2013 10:56</td>
-							<td>5 3 6 12 34 22</td>
+							<td>{{dateFormat time}}</td>
+							<td>{{combination}}</td>
 						</tr>
+						{{/each}}
 					</tbody>
 				</table>
 			</div>
@@ -83,7 +86,7 @@
 	      <span class="icon-bar"></span>
 	      <span class="icon-bar"></span>
 	    </button>
-	    <a class="navbar-brand" href="#">Bitcony - fair instant bitcoin lottery | jackpot is {{jackpot.value}}&#3647; now!</a>
+	    <a class="navbar-brand" href="#">Bitcony - fair instant bitcoin lottery</a>
 	  </div>
 	    <!--<ul class="nav navbar-nav navbar-right">
 	      <li><a href="#">Link</a></li>
