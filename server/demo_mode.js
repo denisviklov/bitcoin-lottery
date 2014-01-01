@@ -12,8 +12,8 @@ var getRandomCombination = function(num, maxVal){
 			}
 		}else{
 			combination.push(newNumber);
+			num--;
 		}
-		num--;
 	}
 	return combination;
 };
@@ -25,8 +25,6 @@ var ts = Math.round((new Date()).getTime() / 1000);
 var recur = function() {
 	var ts = Math.round((new Date()).getTime() / 1000);
 	var ran = Math.round(Math.random()*10);
-	//console.log('schedule tick. I will get called again in ' + ran + ' second(s)');
-	//console.log(getRandomArbitary(0,5));
 	var name = names[getRandomArbitary(0,5)];
 	LastRegisteredUsers.insert({username: name, time: new Date});
 	MyCron.addScheduleJob(ts + ran, recur);
@@ -43,9 +41,17 @@ var recur_jackpot = function() {
 	Jackpot.update({}, {$inc:{'value': 0.009}});
 	MyCron.addScheduleJob(ts + ran, recur_jackpot);
 };
+var recur_lastwins = function(){
+	var ts = Math.round((new Date()).getTime() / 1000);
+	var ran = Math.round(Math.random()*10);
+	var name = names[getRandomArbitary(0,5)];
+	LastWins.insert({username: name, time: new Date, amount: 0.2});
+	MyCron.addScheduleJob(ts + ran, recur_lastwins);
+}
 
-if(CONF.is_demo)
+if(CONF.is_demo){
+	recur_lastwins();
 	recur_jackpot();
 	recur_combinations();
 	recur();
-	
+}

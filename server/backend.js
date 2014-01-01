@@ -4,6 +4,7 @@ LastCombinations = new Meteor.Collection('lastcombinations');
 LastWins = new Meteor.Collection('lastwins');
 PromoCodes = new Meteor.Collection('promocodes');
 
+//------------------capped collectios
 var userQuery = LastRegisteredUsers.find({});
 var userHandler = userQuery.observeChanges({
 	added: function(username, time){
@@ -24,6 +25,27 @@ var combinationHandler = combinationQuery.observeChanges({
 	},
 });
 
+var combinationQuery = LastCombinations.find({});
+var combinationHandler = combinationQuery.observeChanges({
+	added: function(combination, time){
+		if(LastCombinations.find().count() > 5){
+			var lastInSet = LastCombinations.findOne({}, {sort:{time: 1}, limit: 1});
+			id = LastCombinations.remove({_id: lastInSet._id});
+		}
+	},
+});
+
+var winsQuery = LastWins.find({});
+var winsHandler = winsQuery.observeChanges({
+	added: function(combination, time){
+		if(LastWins.find().count() > 5){
+			var lastInSet = LastWins.findOne({}, {sort:{time: 1}, limit: 1});
+			id = LastWins.remove({_id: lastInSet._id});
+		}
+	},
+});
+//---------------------end of capped collections
+
 Meteor.startup(function(){
 	if(!Jackpot.findOne())
 		Jackpot.insert({value: 1000});
@@ -41,9 +63,14 @@ Meteor.publish('lastcombinations', function(){
 	return LastCombinations.find({}, {sort:{time: -1}, limit: 5});
 });
 
+Meteor.publish('lastwins', function(){
+	return LastWins.find({}, {sort:{time: -1}, limit: 5});
+});
+
 Meteor.methods({
 	sendVerificationEmail: function(){
 		Accounts.sendVerificationEmail(Meteor.userId());
+		LastRegisteredUsers.insert({username: Meteor.user().username, time: new Date});
 	},
 });
 

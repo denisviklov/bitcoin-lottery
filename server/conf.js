@@ -1,1 +1,1 @@
-CONF = {is_demo: true};
+CONF = {is_demo: false};

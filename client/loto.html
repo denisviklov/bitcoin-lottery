@@ -10,70 +10,100 @@
 	<div class="container">
 		<div class="row">
 		{{> alert}}
+		<h1>Jackpot - {{prettyJackpot jackpot.value}}&#3647;</h1>
+		{{#if currentUser}}
+			<ul class="nav nav-tabs">
+			  	<li class="active"><a href="/innerMain">Home</a></li>
+			  	<li><a href="#">Deposit/Withdrawal</a></li>
+			  	<li><a href="#">Profile</a></li>
+			  	<li><a href="#">History</a></li>
+			  	<li><a href="#">Affilate</a></li>
+			</ul>
+		{{/if}}
 		{{yield}}
 		</div>
 	</div>
 </template>
 
 <template name="home">
+	<div class="col-md-12">
+		{{#unless currentUser}}
+			<center><h1><a href="/signUp">SIGN UP</a></h1></center>
+			<center><h2><a href="/login">LOGIN</a></h2></center>
+		{{/unless}}
+	</div>
+	{{> stats}}
+	<div class="col-md-3"></div>
+</template>
 
-			<div class="col-md-12">
-				<center><h1><a href="/signUp">SIGN UP</a></h1></center>
-				<center><h2><a href="/signUp">LOGIN</a></h2></center>
-				<h1>Jackpot - {{prettyJackpot jackpot.value}}&#3647;</h1>
-			</div>
-			<div class="col-md-3">
-				<center><span>Last 5 registered</span></center>
-				<table class="table">
-					<thead>
-						<th>time</th>
-						<th>username</th>
-					</thead>
-					<tbody>
-						{{#each lastusers}}
-						<tr>
-							<td>{{dateFormat time}}</td>
-							<td>{{username}}</td>
-						</tr>
-						{{/each}}
-					</tbody>
-				</table>
-			</div>
-			<div class="col-md-3">
-				<center><span>Last 5 combinations</span></center>
-				<table class="table">
-					<thead>
-						<th>time</th>
-						<th>combination</th>
-					</thead>
-					<tbody>
-						{{#each lastcombinations}}
-						<tr>
-							<td>{{dateFormat time}}</td>
-							<td>{{combination}}</td>
-						</tr>
-						{{/each}}
-					</tbody>
-				</table>
-			</div>
-			<div class="col-md-3">
-				<center><span>Last 5 winners</span></center>
-				<table class="table">
-					<thead>
-						<th>time</th>
-						<th>username</th>
-						<th>amount</th>
-					</thead>
-					<tbody>
-						<tr>
-							<td>20/11/2013 10:56</td>
-							<td>jacobson</td>
-							<td>0.2&#3647;</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="col-md-3"></div>
+<template name="stats">
+	<div class="col-md-4">
+		<center><span>Last 5 registered</span></center>
+		<table class="table">
+			<thead>
+				<th>time</th>
+				<th>username</th>
+			</thead>
+			<tbody>
+				{{#each lastusers}}
+				<tr>
+					<td>{{dateFormat time}}</td>
+					<td>{{username}}</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+	<div class="col-md-4">
+		<center><span>Last 5 combinations</span></center>
+		<table class="table">
+			<thead>
+				<th>time</th>
+				<th>combination</th>
+			</thead>
+			<tbody>
+				{{#each lastcombinations}}
+				<tr>
+					<td>{{dateFormat time}}</td>
+					<td>{{combination}}</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+	<div class="col-md-4">
+		<center><span>Last 5 winners</span></center>
+		<table class="table">
+			<thead>
+				<th>time</th>
+				<th>username</th>
+				<th>amount</th>
+			</thead>
+			<tbody>
+				{{#each lastwins}}
+				<tr>
+					<td>{{dateFormat time}}</td>
+					<td>{{username}}</td>
+					<td>{{amount}}&#3647;</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+</template>
+
+<template name="innerMain">
+	Choice 5 numbers
+	<p></p>
+	{{> gameField}}
+</template>
+
+<template name="gameField">
+	<table>
+		<tr>
+		{{{getTicket}}}
+		</tr>
+	</table>
 </template>
 
 <template name="navBar">
@@ -87,21 +117,12 @@
 	      <span class="icon-bar"></span>
 	    </button>
 	    <a class="navbar-brand" href="#">Bitcony - fair instant bitcoin lottery</a>
+	    {{#if currentUser}}
+	    	<ul class="nav navbar-nav navbar-left">
+	      		<li><a href="/logout">logout</a></li>
+	      	</ul>
+	    {{/if}}
 	  </div>
-	    <!--<ul class="nav navbar-nav navbar-right">
-	      <li><a href="#">Link</a></li>
-	      <li class="dropdown">
-	        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-	        <ul class="dropdown-menu">
-	          <li><a href="#">Action</a></li>
-	          <li><a href="#">Another action</a></li>
-	          <li><a href="#">Something else here</a></li>
-	          <li class="divider"></li>
-	          <li><a href="#">Separated link</a></li>
-	        </ul>
-	      </li>
-	    </ul>
-	  </div>--><!-- /.navbar-collapse -->
 	</nav>
 </template>
 
@@ -135,4 +156,20 @@
 
 <template name="verifyEmail">
 	<h2>Email verification page</h2>
+</template>
+
+<template name="login">
+	<div class="col-md-6">
+		<form role="form">
+			<div class="form-group">
+			    <label for="inputEmail">Email address</label>
+			    <input type="email" class="form-control" id="inputEmail" placeholder="Enter email">
+			</div>
+			<div class="form-group">
+			  <label for="inputUsername">Password</label>
+			  <input type="text" class="form-control" id="inputPassword" placeholder="Enter password">
+			</div>
+			<button type="submit" id="submit" class="btn btn-default">Submit</button>
+		</form>
+	</div>
 </template>
