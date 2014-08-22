@@ -1,5 +1,7 @@
 if (Meteor.isClient) {
-  Meteor.startup(function(){});
+  Meteor.startup(function(){
+    Session.set('ticket', [])
+  });
 
   Meteor.subscribe('jackpotPub');
   var Jackpot = new Meteor.Collection('jackpot');
@@ -22,7 +24,7 @@ if (Meteor.isClient) {
 
   Template.layout.helpers({
     prettyJackpot: function(jackpot){
-      return String(jackpot).slice(0, 5);
+      return String(jackpot).slice(0, 7);
     },
   });
 
@@ -41,6 +43,20 @@ if (Meteor.isClient) {
     },
   });
 
+  Template.gameField.ticket = function(){
+    return Session.get('ticket')
+  };
+
+var find_and_delete = function(arr, el){
+  for(i=0; i < arr.length; i++){
+    if(arr[i] == el){
+      delete arr[i];
+      return _.compact(arr);
+    }
+  }
+  return arr;
+};
+
   Template.gameField.events({
     'mouseenter .ticket': function(event){
       if($(event.currentTarget).attr('touse') == 'false')
@@ -52,12 +68,29 @@ if (Meteor.isClient) {
       }
     },
     'click .ticket': function(event){
+      var ticket = Session.get('ticket');
       if($(event.currentTarget).attr('touse') == 'false'){
-        $(event.currentTarget).attr('bgcolor', '#008000');
-        $(event.currentTarget).attr('touse', 'true');
+        if(Session.get('ticket').length == 5)
+          showAlert({alertClass: 'warning', txt: 'Only 5 digits allowed'});
+        else{
+          ticket.push($(event.currentTarget).text());
+          Session.set('ticket', ticket);
+          $(event.currentTarget).attr('bgcolor', '#008000');
+          $(event.currentTarget).attr('touse', 'true');
+        }
       }else{
         $(event.currentTarget).attr('bgcolor', '#ffffff');
         $(event.currentTarget).attr('touse', 'false');
+        ticket = find_and_delete(ticket, $(event.currentTarget).text());
+        Session.set('ticket', ticket);
+      }
+    },
+    'click #buy-ticket': function(event){
+      //buy ticket functional there
+      if(Session.get('ticket').length != 5)
+        showAlert({alertClass: 'warning', txt: 'Ticket should contain 5 digits'});
+      else{
+        //call backend method
       }
     },
   });
@@ -84,6 +117,7 @@ if (Meteor.isClient) {
       Meteor.loginWithPassword(email, password, function(err){
         if(err){
           showAlert({alertClass: 'danger', txt: err.reason});
+          submit_btn.prop('disabled', false);
         }else{
           Router.go('main');
         }

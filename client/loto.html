@@ -9,8 +9,8 @@
 	{{> navBar}}
 	<div class="container">
 		<div class="row">
-		{{> alert}}
 		<h1>Jackpot - {{prettyJackpot jackpot.value}}&#3647;</h1>
+		{{> alert}}
 		{{#if currentUser}}
 			<ul class="nav nav-tabs">
 			  	<li class="active"><a href="/innerMain">Home</a></li>
@@ -20,7 +20,7 @@
 			  	<li><a href="#">Affilate</a></li>
 			</ul>
 		{{/if}}
-		{{yield}}
+		{{> yield}}
 		</div>
 	</div>
 </template>
@@ -93,21 +93,28 @@
 </template>
 
 <template name="innerMain">
-	Choice 5 numbers
-	<p></p>
+	<h4>Choice 5 numbers</h4>
+	
 	{{> gameField}}
 </template>
 
 <template name="gameField">
-	<table>
-		<tr>
-		{{{getTicket}}}
-		</tr>
-	</table>
+	<div class="col-md-6">
+		<table>
+			<tr>
+			{{{getTicket}}}
+			</tr>
+		</table>
+	</div>
+	<div class="col-md-6">
+		<h3>Your ticket: {{ticket}}</h3>
+		<p><button id="buy-ticket" type="button" class="btn btn-success">Buy ticket 0.02&#3647;</button></p>
+	</div>
 </template>
 
 <template name="navBar">
 	<nav class="navbar navbar-default" role="navigation">
+	<div class="col-md-8">
 	  <!-- Brand and toggle get grouped for better mobile display -->
 	  <div class="navbar-header">
 	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -117,10 +124,13 @@
 	      <span class="icon-bar"></span>
 	    </button>
 	    <a class="navbar-brand" href="#">Bitcony - fair instant bitcoin lottery</a>
+	    </div>
 	    {{#if currentUser}}
-	    	<ul class="nav navbar-nav navbar-left">
+	    <div class="col-md-4">
+	    	<ul class="nav navbar-nav navbar-right">
 	      		<li><a href="/logout">logout</a></li>
 	      	</ul>
+	    </div>
 	    {{/if}}
 	  </div>
 	</nav>
@@ -151,7 +161,10 @@
 </template>
 
 <template name="alert">
-	<div class="alert" style="display: none;"></div>
+	<div class="alert alert-warning alert-dismissible" style="display: none;" role="alert">
+	  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	  <span id="alert-txt"></span>
+	</div>
 </template>
 
 <template name="verifyEmail">

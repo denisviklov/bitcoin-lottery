@@ -11,12 +11,12 @@ Router.configure({
 });
 
 Router.map(function(){
-  this.route('home', {path: '/', template: 'home'});
+  this.route('home', {path: '/'});
   this.route('signUp');
   this.route('login');
   this.route('verifyEmail', {
     path: '/verify-email/:token',
-    load: function(){
+    onRun: function(){
       Accounts.verifyEmail(this.params.token, function(err){
         //strange behaviour here, load is call two times
         Router.go('main');

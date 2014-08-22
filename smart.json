@@ -1,6 +1,7 @@
 {
   "packages": {
     "iron-router": {},
-    "cron-tick": {}
+    "cron-tick": {},
+    "npm": {}
   }
 }
