@@ -1,0 +1,207 @@
+<head>
+  <title>Bitcoin Lottery - instant payments</title>
+</head>
+
+<body>
+</body>
+
+<template name="layout">
+	{{> navBar}}
+	<div class="container">
+		<div class="row">
+		<h1>Jackpot - {{prettyJackpot jackpot.value}}&#3647;</h1>
+		{{> alert}}
+		{{#if currentUser}}
+			{{> navTabs}}
+		{{/if}}
+		{{> yield}}
+		</div>
+	</div>
+</template>
+
+<template name="navTabs">
+	<ul class="nav nav-tabs">
+	  	<li><a class="active" href="/game">Loto</a></li>
+	  	<li><a href="/deposit">Deposit</a></li>
+	  	<li><a href="/withdrawal">Withdrawal</a></li>
+	  	<li><a href="#">History</a></li>
+	  	<li><a href="#">Affilate</a></li>
+	</ul>	
+</template>
+
+<template name="home">
+	<div class="col-md-12">
+		{{#unless currentUser}}
+			<center><h1><a href="/signUp">SIGN UP</a></h1></center>
+			<center><h2><a href="/login">LOGIN</a></h2></center>
+		{{/unless}}
+	</div>
+	{{> stats}}
+	<div class="col-md-3"></div>
+</template>
+
+<template name="stats">
+	<div class="col-md-4">
+		<center><span>Last 5 registered</span></center>
+		<table class="table">
+			<thead>
+				<th>time</th>
+				<th>username</th>
+			</thead>
+			<tbody>
+				{{#each lastusers}}
+				<tr>
+					<td>{{dateFormat time}}</td>
+					<td>{{username}}</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+	<div class="col-md-4">
+		<center><span>Last 5 combinations</span></center>
+		<table class="table">
+			<thead>
+				<th>time</th>
+				<th>combination</th>
+			</thead>
+			<tbody>
+				{{#each lastcombinations}}
+				<tr>
+					<td>{{dateFormat time}}</td>
+					<td>{{combination}}</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+	<div class="col-md-4">
+		<center><span>Last 5 winners</span></center>
+		<table class="table">
+			<thead>
+				<th>time</th>
+				<th>username</th>
+				<th>amount</th>
+			</thead>
+			<tbody>
+				{{#each lastwins}}
+				<tr>
+					<td>{{dateFormat time}}</td>
+					<td>{{username}}</td>
+					<td>{{amount}}&#3647;</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+</template>
+
+<template name="game">
+	<h4>Choice 5 numbers</h4>
+	
+	{{> gameField}}
+</template>
+
+<template name="gameField">
+	<div class="col-md-6">
+		<table role="table">
+			<tr>
+			{{{getTicket}}}
+			</tr>
+		</table>
+	</div>
+	<div class="col-md-6">
+		<h3>Your ticket: {{ticket}}</h3>
+		<p><button id="buy-ticket" type="button" class="btn btn-success">Buy ticket 0.02&#3647;</button></p>
+	</div>
+</template>
+
+<template name="navBar">
+	<nav class="navbar navbar-default" role="navigation">
+	<div class="col-md-8">
+	  <!-- Brand and toggle get grouped for better mobile display -->
+	  <div class="navbar-header">
+	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	      <span class="sr-only">Toggle navigation</span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	    </button>
+	    <a class="navbar-brand" href="#">Bitcony - fair instant bitcoin lottery</a>
+	    </div>
+	    {{#if currentUser}}
+	    <div class="col-md-4">
+	    	<ul class="nav navbar-nav navbar-right">
+	      		<li><a href="/logout">logout</a></li>
+	      	</ul>
+	    </div>
+	    {{/if}}
+	  </div>
+	</nav>
+</template>
+
+<template name="signUp">
+	<div class="col-md-6">
+		<form role="form">
+		  <div class="form-group">
+		    <label for="inputUsername">Username*</label>
+		    <input type="text" class="form-control" id="inputUsername" placeholder="Enter username">
+		  </div>
+		  <div class="form-group">
+		    <label for="inputEmail">Email address*</label>
+		    <input type="email" class="form-control" id="inputEmail" placeholder="Enter email">
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPassword">Password*</label>
+		    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPromoCode">Promo code(optional)</label>
+		    <input type="text" class="form-control" id="inputPromoCode" placeholder="Promo code">
+		  </div>
+		  <button type="submit" id="submit" class="btn btn-default">Submit</button>
+		</form>
+	</div>
+</template>
+
+<template name="alert">
+	<div class="alert alert-warning alert-dismissible" style="display: none;" role="alert">
+	  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	  <span id="alert-txt"></span>
+	</div>
+</template>
+
+<template name="verifyEmail">
+	<h2>Email verification page</h2>
+</template>
+
+<template name="login">
+	<div class="col-md-6">
+		<form role="form">
+			<div class="form-group">
+			    <label for="inputEmail">Email address</label>
+			    <input type="email" class="form-control" id="inputEmail" placeholder="Enter email">
+			</div>
+			<div class="form-group">
+			  <label for="inputUsername">Password</label>
+			  <input type="text" class="form-control" id="inputPassword" placeholder="Enter password">
+			</div>
+			<button type="submit" id="submit" class="btn btn-default">Submit</button>
+		</form>
+	</div>
+</template>
+
+<template name="deposit">
+	<div class="col-md-6">
+		<h3>Deposit</h3>
+		<h4>Your deposit address is:</h4>
+		<span>{{currentUser.profile.address}}</span>
+		<h6>Note: deposit address never changes, you could add it to bookmarks</h6>
+	</div>
+</template>
+
+<template name="withdrawal">
+	<div class="col-md-6">
+		<h3>Withdrawal</h3>		
+	</div>
+</template>
