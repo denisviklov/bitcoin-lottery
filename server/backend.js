@@ -76,15 +76,15 @@ Meteor.methods({
 		self = this;
 		if(this.userId){
 			if (!Meteor.user().profile.address){
+				var callback_id = MD5.hex(CONF.salt + this.userId);
 				HTTP.get("https://blockchain.info/ru/api/receive",
-					{params: {method: "create", address: CONF.wallet_address, callback: CONF.callback_url}},
+					{params: {method: "create", address: CONF.wallet_address,
+					callback: CONF.callback_url +'?secrete='+ callback_id}},
 					function(err, res){
 						if(res){
-							console.log(res);
 							var address = res.data.input_address;
-							console.log(address);
-							console.log(self.userId);
-							console.log(Meteor.users.update({_id: self.userId}, {$set: {profile: {address: address}}}));
+							Meteor.users.update({_id: self.userId},
+								{$set: {payment_secrete: callback_id, profile: {address: address}}});
 						}else{
 							console.log(err);
 						}
