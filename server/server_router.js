@@ -15,7 +15,7 @@ Router.map(function(){
             var userBalance = user.balance ? user.balance : 0;
             Meteor.users.update(user._id, {$set: {balance: userBalance + parseInt(this.params.value)}});
         }
-        this.response.end('{status: "Ok"}');
+        this.response.end('*ok*');
       }
     });
 });

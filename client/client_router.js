@@ -1,3 +1,5 @@
+Router.onBeforeAction('loading');
+
 Router.configure({
   before: function(){
     if(this.route.name == 'logout'){
@@ -26,7 +28,9 @@ Router.map(function(){
     },
   });
   this.route('logout', {path: '/logout'});
-  this.route('game');
+  this.route('game', {
+  waitOn: function() { return Meteor.subscribe('settings')},
+  });
   this.route('deposit', {
     onBeforeAction: function(){
       Meteor.call('isWalletExist', function(err, res){

@@ -1,6 +1,7 @@
+
 if (Meteor.isClient) {
   Meteor.startup(function(){
-    Session.set('ticket', [])
+    Session.set('ticket', []);
   });
 
   Meteor.subscribe('jackpotPub');
@@ -15,6 +16,10 @@ if (Meteor.isClient) {
   Meteor.subscribe('lastwins');
   var LastWins = new Meteor.Collection('lastwins');
 
+  Meteor.subscribe('settings');
+  var Settings = new Meteor.Collection('settings');
+
+
   Template.navBar.jackpot = function(){
     return Jackpot.findOne({});
   };
@@ -28,11 +33,13 @@ if (Meteor.isClient) {
     },
   });
 
-  Template.gameField.helpers({
+
+/*  Template.gameField.helpers({
     getTicket: function(){
       var type = '5/36';
+      var settings = Settings.findOne();
       var field = '';
-      for(i=1; i<37; i++){
+      for(i=1; i<settings.gameType.from; i++){
         if(i==1 || i==7 || i==13 || i==19 || i==25 || i==31)
           field+='<tr>';
         field += '<td class="ticket" touse=false><span>'+i+'</span></td>';
@@ -41,7 +48,54 @@ if (Meteor.isClient) {
       }
       return field;
     },
-  });
+  });*/
+Template.gameField.field = function(){
+      //var type = '5/36';
+      //console.log(Session.get("gameType"));
+      var field = '';
+      //settings.gameType = {};
+      //settings.gameType.num = 5;
+      //settings.gameType.from = 36;
+      var z = 1;
+      console.log(Settings.find().fetch())
+      var setting = Settings.find().fetch()[0];
+      console.log(setting);
+      for(i=0; i<setting.gameType.num; i++){
+        field+="<tr>";
+        for(j=0; j<parseInt(setting.gameType.from/setting.gameType.num) && z<=setting.gameType.from; j++){
+          field+='<td class="ticket" touse=false><span>'+z+'</span></td>';
+          z++;
+        }
+        z++;
+        field+='</tr>';
+      }
+      return field;  
+    };
+
+  /*Template.gameField.helpers({
+    getTicket: function(){
+      //var type = '5/36';
+      //console.log(Session.get("gameType"));
+      console.log(Settings);console.log(Settings.find().fetch());
+      var settings = new Object;
+      var field = '';
+      settings.gameType = {};
+      settings.gameType.num = 5;
+      settings.gameType.from = 36;
+      var z = 1;
+      for(i=0; i<settings.gameType.num; i++){
+        field+="<tr>";
+        for(j=0; j<parseInt(settings.gameType.from/settings.gameType.num) && z<=settings.gameType.from; j++){
+          field+='<td class="ticket" touse=false><span>'+z+'</span></td>';
+          z++;
+        }
+        z++;
+        field+='</tr>';
+      }
+      return field;
+    },
+  });*/
+
 
   Template.gameField.ticket = function(){
     return Session.get('ticket')

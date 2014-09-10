@@ -3,6 +3,7 @@ LastRegisteredUsers = new Meteor.Collection('lastusers');
 LastCombinations = new Meteor.Collection('lastcombinations');
 LastWins = new Meteor.Collection('lastwins');
 PromoCodes = new Meteor.Collection('promocodes');
+Settings = new Meteor.Collection('settings');
 
 //------------------capped collectios
 var userQuery = LastRegisteredUsers.find({});
@@ -46,9 +47,13 @@ var winsHandler = winsQuery.observeChanges({
 });
 //---------------------end of capped collections
 
+
+//---------jackpot init
 Meteor.startup(function(){
 	if(!Jackpot.findOne())
 		Jackpot.insert({value: 1000});
+	if(!Settings.findOne())
+		Settings.insert({gameType: {num: 5, from: 36}});
 });
 
 Meteor.publish('jackpotPub', function(){
@@ -65,6 +70,10 @@ Meteor.publish('lastcombinations', function(){
 
 Meteor.publish('lastwins', function(){
 	return LastWins.find({}, {sort:{time: -1}, limit: 5});
+});
+
+Meteor.publish('settings', function(){
+	return Settings.find({});
 });
 
 Meteor.methods({
