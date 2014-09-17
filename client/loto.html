@@ -10,7 +10,7 @@
 	<div class="container">
 		<div class="row">
 		<h1>Jackpot - {{prettyJackpot jackpot.value}}&#3647;</h1>
-		{{> alert}}
+		{{> notifications}}
 		{{#if currentUser}}
 			{{> navTabs}}
 		{{/if}}
@@ -24,8 +24,8 @@
 	  	<li><a class="active" href="/game">Loto</a></li>
 	  	<li><a href="/deposit">Deposit</a></li>
 	  	<li><a href="/withdrawal">Withdrawal</a></li>
-	  	<li><a href="#">History</a></li>
-	  	<li><a href="#">Affilate</a></li>
+	  	<li><a href="/history">History</a></li>
+	  	<li><a href="/affilate">Affilate</a></li>
 	</ul>	
 </template>
 
@@ -202,8 +202,47 @@
 
 <template name="withdrawal">
 	<div class="col-md-6">
-		<h3>Withdrawal</h3>		
+		<h3>Withdrawal</h3>
+		<form role="form" type="post">
+			<div class="form-group">
+			    <label for="amount">Amount &#3647;</label>
+			    <input type="amount" class="form-control" id="amount" placeholder="">
+			</div>			
+			<div class="form-group">
+			    <label for="address">Bitcoin address</label>
+			    <input type="address" class="form-control" id="address" placeholder="Put your bitcoin address here">
+			</div>
+			<button type="submit" id="submit" class="btn btn-default">Submit</button>
+		</form>		
 	</div>
+</template>
+
+<template name="history">
+	<div class="col-md-6">
+		<h3>History</h3>
+		<table class="table">
+			<thead>
+				<th>Date</th>
+				<th>Action</th>
+				<th>Description</th>
+			</thead>
+			{{#each records}}
+			<tr>
+				<td>{{dateFormat date}}</td>
+				<td>{{action}}</td>
+				<td>{{txt}}</td>
+			</tr>
+			{{/each}}
+		</table>
+	</div>
+</template>
+
+<template name="affilate">
+	<div class="col-md-6">
+		<h3>Affilate</h3>
+		<h4>Place this url and get bonus for every registery man: </h4>
+		<div>{{url}}</div>
+	</div>	
 </template>
 
 <template name="loading">

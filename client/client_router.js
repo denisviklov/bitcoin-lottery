@@ -43,4 +43,6 @@ Router.map(function(){
     },
   });
   this.route('withdrawal');
+  this.route('history');
+  this.route('affilate');
 });

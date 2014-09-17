@@ -4,6 +4,7 @@ LastCombinations = new Meteor.Collection('lastcombinations');
 LastWins = new Meteor.Collection('lastwins');
 PromoCodes = new Meteor.Collection('promocodes');
 Settings = new Meteor.Collection('settings');
+History = new Meteor.Collection('history');
 
 //------------------capped collectios
 var userQuery = LastRegisteredUsers.find({});
@@ -74,6 +75,10 @@ Meteor.publish('lastwins', function(){
 
 Meteor.publish('settings', function(){
 	return Settings.find({});
+});
+
+Meteor.publish('history', function(){
+	return History.find({user_id: this.userId});
 });
 
 Meteor.methods({
