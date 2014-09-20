@@ -3,7 +3,7 @@ Router.onBeforeAction('loading');
 Router.configure({
   before: function(){
     if(this.route.name == 'logout'){
-      this.stop();
+      this.pause();
       Meteor.logout();
       Router.go('/');
       return;
@@ -13,9 +13,21 @@ Router.configure({
 });
 
 Router.map(function(){
-  this.route('home', {path: '/'});
+  this.route('home', {
+    path: '/',
+    onBeforeAction: function() {
+      $('body').addClass('coming-soon');
+    },
+  });
+
   this.route('signUp');
-  this.route('login');
+  this.route('login', {
+    onBeforeAction: function() {
+      $('.coming-soon').removeClass('coming-soon');
+    },
+  });
+  this.route('logout', {path: '/logout'});
+
   this.route('verifyEmail', {
     path: '/verify-email/:token',
     onRun: function(){
@@ -27,7 +39,7 @@ Router.map(function(){
       });
     },
   });
-  this.route('logout', {path: '/logout'});
+
   this.route('game', {
   waitOn: function() { return Meteor.subscribe('settings')},
   });
