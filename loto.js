@@ -164,6 +164,7 @@ if (Meteor.isClient) {
           }else{
             Meteor.call('sendVerificationEmail');
             Notifications.success('success', 'For confirm registration. Please, check your email for further instructions')
+            Router.go('game');
             //showAlert({alertClass: 'success', txt: 'For confirm registration. \
               //Please, check your email for further instructions'});
           }
@@ -194,6 +195,11 @@ if (Meteor.isClient) {
   Template.affilate.url = function(){
     return document.location.origin + '/welcome/' + Meteor.userId();
   };
+
+  function jackpotWidget(){
+    return String(Jackpot.findOne().value).slice(0, 7) + ' &#3647;';
+  };
+  Template.registerHelper('jackpotWidget', jackpotWidget);
 }
 
 

@@ -55,6 +55,9 @@ Meteor.startup(function(){
 		Jackpot.insert({value: 1000});
 	if(!Settings.findOne())
 		Settings.insert({gameType: {num: 5, from: 36}});
+	//settings
+	if(!process.env.MAIL_URL)
+  		process.env.MAIL_URL = 'smtp://postmaster%40bitcoinlottery.rocks:81d80b0d2449e1cdff907e8f6ad761b5@smtp.mailgun.org:587';
 });
 
 Meteor.publish('jackpotPub', function(){

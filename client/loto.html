@@ -31,11 +31,27 @@
 
 <template name="layout">
 	{{> navBar}}
+	{{> notifications}}
+			<div class="container">
+			<div class="row">
+				<div class="wrapper">
+				<h1>Jackpot - {{prettyJackpot jackpot.value}}&#3647;</h1>
+			</div>
+			{{> notifications}}
+			{{#if currentUser}}
+				{{> navTabs}}
+			{{/if}}
+			</div>
+			</div>
+			{{> yield}}
+</template>
+
+<template name="landing">
 	<div class="fix-div coming-soon">
 	<div class="container-fluid">
 	<div class="row">
 	<div class="col-md-6">
-		<h1 style="margin-left: 10%;">Jackpot - {{prettyJackpot jackpot.value}}&#3647;</h1>
+		<h1>Jackpot {{{jackpotWidget}}}</h1>
 	</div>
 	<div class="col-md-6">
 		<div id="countdown" class="is-countdown">
@@ -52,17 +68,13 @@
 			</span>
 		</div>
 	</div>
-	{{> yield}}
+	{{> home}}
 	</div>
 	</div>
 	</div>
-	<div class="wrapper" id="wrapper">
+	<div class="wrapper" id="wrapper-menu">
 		<div class="container-fluid">
 			<div class="row">
-				{{> notifications}}
-				{{#if currentUser}}
-					{{> navTabs}}
-				{{/if}}
 				<div class="col-md-12">
 					<div class="col-md-3"></div>
 					<center><div class="col-md-6">
@@ -197,9 +209,13 @@
 </template>
 
 <template name="game">
-	<h4>Choice 5 numbers</h4>
-	
-	{{> gameField}}
+	<div class="container">
+		<div class="row">
+			<h4>Choice 5 numbers</h4>
+		
+			{{> gameField}}
+		</div>
+	</div>
 </template>
 
 <template name="gameField">
@@ -229,24 +245,28 @@
           <a class="navbar-brand" href="/"><img src="img/logo.png" alt="..."></a>
         </div>
         <div class="collapse navbar-collapse">
-          <button class="navbar-btn btn btn-theme-primary pull-right hidden-sm hidden-xs">Sign In</button>
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown active">
-	            <li class="hidden-sm">
-	              <a href="ui-elements.html">Why We?</a>
+        	{{# if currentUser}}
+          		<a href="/logout" class="navbar-btn btn btn-theme-primary pull-right hidden-sm hidden-xs">Logout</a>
+	        {{else}}
+	          <a href="/login" class="navbar-btn btn btn-theme-primary pull-right hidden-sm hidden-xs">Sign In</a>
+			{{/if}}
+	          <!--<ul class="nav navbar-nav navbar-right">
+	            <li class="dropdown active">
+		            <li class="hidden-sm">
+		              <a href="ui-elements.html">Why We?</a>
+		            </li>
 	            </li>
-            </li>
-            <li class="dropdown active">
-	            <li class="hidden-sm">
-	              <a href="ui-elements.html">Rules</a>
+	            <li class="dropdown active">
+		            <li class="hidden-sm">
+		              <a href="ui-elements.html">Rules</a>
+		            </li>
 	            </li>
-            </li>
-            <li class="dropdown active">
-	            <li class="hidden-sm">
-	              <a href="ui-elements.html">FAQ</a>
-            	</li>
-            </li>
-            </ul>
+	            <li class="dropdown active">
+		            <li class="hidden-sm">
+		              <a href="ui-elements.html">FAQ</a>
+	            	</li>
+	            </li>
+	           </ul>-->
             <a></a>
         </div><!--/.nav-collapse -->
       </div>
@@ -315,6 +335,8 @@
 </template>
 
 <template name="login">
+<div class="container">
+<div class="row">
 	<div class="col-md-6">
 		<form role="form">
 			<div class="form-group">
@@ -328,18 +350,29 @@
 			<button type="submit" id="submit" class="btn btn-default">Submit</button>
 		</form>
 	</div>
+	<div class="col-md-6">
+		<h1>Good day to make a bet!</h1>
+	</div>
+</div>
+</div>
 </template>
 
 <template name="deposit">
+<div class="container">
+<div class="row">
 	<div class="col-md-6">
 		<h3>Deposit</h3>
 		<h4>Your deposit address is:</h4>
 		<span>{{currentUser.profile.address}}</span>
 		<h6>Note: deposit address never changes, you could add it to bookmarks</h6>
 	</div>
+</div>
+</div>
 </template>
 
 <template name="withdrawal">
+<div class="container">
+<div class="row">
 	<div class="col-md-6">
 		<h3>Withdrawal</h3>
 		<form role="form" type="post">
@@ -354,9 +387,13 @@
 			<button type="submit" id="submit" class="btn btn-default">Submit</button>
 		</form>		
 	</div>
+</div>
+</div>
 </template>
 
 <template name="history">
+<div class="container">
+<div class="row">
 	<div class="col-md-6">
 		<h3>History</h3>
 		<table class="table">
@@ -374,14 +411,20 @@
 			{{/each}}
 		</table>
 	</div>
+</div>
+</div>
 </template>
 
 <template name="affilate">
+<div class="container">
+<div class="row">
 	<div class="col-md-6">
 		<h3>Affilate</h3>
 		<h4>Place this url and get bonus for every registery man: </h4>
 		<div>{{url}}</div>
-	</div>	
+	</div>
+</div>
+</div>	
 </template>
 
 <template name="footer">

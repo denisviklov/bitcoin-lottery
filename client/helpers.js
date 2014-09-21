@@ -15,3 +15,4 @@ function activeTab(){
 }
 
 Handlebars.registerHelper('dateFormat', dateFormat);
+

@@ -8,6 +8,8 @@ Accounts.onCreateUser(function(options, user){
 			user.promocodeFail = true;
 		}
 	}
+	user.profile = {address: ''}
+	user.balance = {bitcoins: 0, tickets: 0}
 	return user;
 });
 

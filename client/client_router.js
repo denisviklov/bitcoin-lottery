@@ -1,7 +1,13 @@
 Router.onBeforeAction('loading');
 
 Router.configure({
+  layoutTemplate: 'layout',
+  loadingTemplate: 'loading',
   before: function(){
+    if(!Meteor.user() && this.route.name !== 'landing')
+      $('body').addClass('coming-soon');
+    if(Meteor.user())
+      $('body').removeClass('coming-soon');
     if(this.route.name == 'logout'){
       this.pause();
       Meteor.logout();
@@ -9,24 +15,29 @@ Router.configure({
       return;
     }
   },
-  layoutTemplate: 'layout'
 });
 
 Router.map(function(){
-  this.route('home', {
+  this.route('landing', {
     path: '/',
     onBeforeAction: function() {
-      $('body').addClass('coming-soon');
+      //$('body').addClass('coming-soon');
     },
   });
 
   this.route('signUp');
   this.route('login', {
     onBeforeAction: function() {
-      $('.coming-soon').removeClass('coming-soon');
+      //$('body').removeClass('coming-soon');
     },
   });
-  this.route('logout', {path: '/logout'});
+  this.route('logout', {
+    path: '/logout',
+    onRun: function(){
+      Meteor.logout();
+      Router.go('landing');
+    }
+  });
 
   this.route('verifyEmail', {
     path: '/verify-email/:token',
