@@ -1,5 +1,10 @@
 accounts-base@1.0.1
+accounts-facebook@1.0.0
+accounts-google@1.0.0
+accounts-oauth@1.0.0
 accounts-password@1.0.1
+accounts-ui-unstyled@1.0.1
+accounts-ui@1.0.0
 application-configuration@1.0.1
 autoupdate@1.0.6
 binary-heap@1.0.0
@@ -13,8 +18,10 @@ ddp@1.0.8
 deps@1.0.3
 ejson@1.0.1
 email@1.0.2
+facebook@1.0.1
 follower-livedata@1.0.1
 geojson-utils@1.0.0
+google@1.0.1
 html-tools@1.0.0
 htmljs@1.0.0
 http@1.0.4
@@ -39,6 +46,8 @@ mongo@1.0.4
 mrt:belt-md5@0.2.0
 mrt:cron-tick@0.0.4
 npm-bcrypt@0.7.7
+oauth2@1.0.0
+oauth@1.0.1
 observe-sequence@1.0.2
 ordered-dict@1.0.0
 random@1.0.0

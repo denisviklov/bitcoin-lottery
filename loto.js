@@ -170,6 +170,13 @@ if (Meteor.isClient) {
           }
         });
     },
+    'click .btn-facebook': function(evt){
+      evt.preventDefault();
+      Meteor.loginWithFacebook({requestPermissions: ['email'], style: 'popup'}, function(err){
+        if(err)
+          Notifications.error('Error', err.message)
+      });
+    },
   });
 
   Template.navTabs.events({

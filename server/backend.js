@@ -58,6 +58,10 @@ Meteor.startup(function(){
 	//settings
 	if(!process.env.MAIL_URL)
   		process.env.MAIL_URL = 'smtp://postmaster%40bitcoinlottery.rocks:81d80b0d2449e1cdff907e8f6ad761b5@smtp.mailgun.org:587';
+  	if(!ServiceConfiguration.configurations.findOne({service: 'facebook'}))
+  		ServiceConfiguration.configurations.insert({service: 'facebook',
+  										appId: '1936365749835664',
+  										secrete: '810703d3cbce79ab3218f5d6270e38f6'})
 });
 
 Meteor.publish('jackpotPub', function(){

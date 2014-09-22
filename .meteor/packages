@@ -12,4 +12,8 @@ accounts-password
 http
 mrt:belt-md5
 mdj:notifications
+accounts-ui
+accounts-facebook
+accounts-google
+service-configuration
 
