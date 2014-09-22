@@ -177,6 +177,13 @@ if (Meteor.isClient) {
           Notifications.error('Error', err.message)
       });
     },
+    'click .btn-google-plus': function(evt){
+      evt.preventDefault();
+      Meteor.loginWithGoogle({style: 'popup'}, function(err){
+        if(err)
+          Notifications.error('Error', err.message)
+      });
+    },
   });
 
   Template.navTabs.events({

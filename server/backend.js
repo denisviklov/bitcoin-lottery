@@ -61,8 +61,16 @@ Meteor.startup(function(){
   	if(!ServiceConfiguration.configurations.findOne({service: 'facebook'}))
   		ServiceConfiguration.configurations.insert({service: 'facebook',
   										appId: '1936365749835664',
-  										secrete: '810703d3cbce79ab3218f5d6270e38f6'})
+  										secrete: '810703d3cbce79ab3218f5d6270e38f6'});
+  	if(!ServiceConfiguration.configurations.findOne({service: 'google'}))
+  		ServiceConfiguration.configurations.insert({service : "google", clientId : "240654706988-edvgfd4cg6gakobtdfsothc8gc1nunu1.apps.googleusercontent.com", secret : "MAmS_D6WlR8wWevxoLbPGlQb"});
+
 });
+/*
+Social credentials
+{ "service" : "facebook", "appId" : "1936365749835664", "secret" : "810703d3cbce79ab3218f5d6270e38f6"}
+{ "service" : "google", "clientId" : "240654706988-edvgfd4cg6gakobtdfsothc8gc1nunu1.apps.googleusercontent.com", "secret" : "MAmS_D6WlR8wWevxoLbPGlQb"}
+*/
 
 Meteor.publish('jackpotPub', function(){
 	return Jackpot.find({});
