@@ -1,13 +1,11 @@
 <head>
-  <title>Bitcoin Lottery - instant payments</title>
+  <title>Bitcoin Lottery - instant payouts, instant prizes, instant lottery GAME</title>
     <meta charset="utf-8">
     <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
     <meta name="viewport" content="width=1024">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="ico/favicon.ico">
-
-    <title>Bitcoinlottery.ROCKS - that's place</title>
 
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet">
@@ -35,12 +33,14 @@
 			<div class="container">
 			<div class="row">
 				<div class="col-md-6">
-				    <h1>Jackpot - {{prettyJackpot jackpot.value}}&#3647;</h1>
+                    <div class="wrapper">
+                        <h1>Jackpot - {{prettyJackpot jackpot.value}}&#3647;</h1>
+                        {{#if currentUser}}
+                            {{> navTabs}}
+                        {{/if}}                        
+                    </div>
 			     </div>
 			{{> notifications}}
-			{{#if currentUser}}
-				{{> navTabs}}
-			{{/if}}
 			</div>
 			</div>
 			{{> yield}}
@@ -211,9 +211,11 @@
 <template name="game">
 	<div class="container">
 		<div class="row">
-			<h4>Choice 5 numbers</h4>
-		
-			{{> gameField}}
+            <div class="md-col-12">
+             <h4>Choice 5 numbers</h4>
+        
+            {{> gameField}}
+            </div>
 		</div>
 	</div>
 </template>

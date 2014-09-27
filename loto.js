@@ -175,6 +175,8 @@ if (Meteor.isClient) {
       Meteor.loginWithFacebook({requestPermissions: ['email'], style: 'popup'}, function(err){
         if(err)
           Notifications.error('Error', err.message)
+        else
+          Router.go('game');
       });
     },
     'click .btn-google-plus': function(evt){
@@ -182,6 +184,29 @@ if (Meteor.isClient) {
       Meteor.loginWithGoogle({style: 'popup'}, function(err){
         if(err)
           Notifications.error('Error', err.message)
+        else
+          Router.go('game');
+      });
+    },
+  });
+
+  Template.login.events({
+    'click .btn-facebook': function(evt){
+      evt.preventDefault();
+      Meteor.loginWithFacebook({requestPermissions: ['email'], style: 'popup'}, function(err){
+        if(err)
+          Notifications.error('Error', err.message)
+        else
+          Router.go('game');
+      });
+    },
+    'click .btn-google-plus': function(evt){
+      evt.preventDefault();
+      Meteor.loginWithGoogle({style: 'popup'}, function(err){
+        if(err)
+          Notifications.error('Error', err.message)
+        else
+          Router.go('game');
       });
     },
   });

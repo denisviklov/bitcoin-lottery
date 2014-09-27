@@ -58,6 +58,8 @@ Meteor.startup(function(){
 	//settings
 	if(!process.env.MAIL_URL)
   		process.env.MAIL_URL = 'smtp://postmaster%40bitcoinlottery.rocks:81d80b0d2449e1cdff907e8f6ad761b5@smtp.mailgun.org:587';
+  	if(!process.env.ROOT_URL)
+  		process.env.ROOT_URL = 'http://bitcoinlottery.rocks'
   	if(!ServiceConfiguration.configurations.findOne({service: 'facebook'}))
   		ServiceConfiguration.configurations.insert({service: 'facebook',
   										appId: '1936365749835664',
