@@ -6,8 +6,16 @@ Router.configure({
   before: function(){
     if(!Meteor.user() && this.route.name !== 'landing')
       $('body').addClass('coming-soon');
-    if(Meteor.user())
+    if(Meteor.user()){
       $('body').removeClass('coming-soon');
+      Meteor.call('getBalance', function(err, res){
+        if(res){
+          console.log(res);    
+          Session.set('balanceBitcoins', res.bitcoins);
+          Session.set('balanceTickets', res.tickets);
+        }
+      });
+    }
     if(this.route.name == 'logout'){
       this.pause();
       Meteor.logout();

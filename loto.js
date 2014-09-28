@@ -26,6 +26,7 @@ if (Meteor.isClient) {
   Template.navBar.jackpot = function(){
     return Jackpot.findOne({});
   };
+
   Template.layout.jackpot = function(){
     return Jackpot.findOne({});
   };
@@ -239,7 +240,18 @@ if (Meteor.isClient) {
     return String(Jackpot.findOne().value).slice(0, 7) + ' &#3647;';
   };
   Template.registerHelper('jackpotWidget', jackpotWidget);
+
+  Template.deposit.rendered = function(){
+    Meteor.call('getBitcoinAddress', function(err, res){
+      if(res){
+        console.log(res);
+        $('#qr').qrcode({text: res,width: 150,height: 150,});
+        }
+      });
+  }
+    //var bitcoinAddress = this.find('.bitcoin-address').value;
+    //console.log(bitcoinAddress);
 }
 
-
+  
   

@@ -16,4 +16,6 @@ accounts-ui
 accounts-facebook
 accounts-google
 service-configuration
+steeve:jquery-qrcode
+handlebar-helpers
 

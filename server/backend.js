@@ -123,6 +123,12 @@ Meteor.methods({
 			}
 		}
 	},
+	getBitcoinAddress: function(){
+		return Meteor.user().profile.address;
+	},
+	getBalance: function(){
+		return Meteor.user().balance;
+	},
 });
 
 

@@ -22,6 +22,7 @@ facebook@1.0.1
 follower-livedata@1.0.1
 geojson-utils@1.0.0
 google@1.0.1
+handlebar-helpers@0.0.0
 html-tools@1.0.0
 htmljs@1.0.0
 http@1.0.4
@@ -63,6 +64,7 @@ spacebars-compiler@1.0.2
 spacebars@1.0.1
 srp@1.0.0
 standard-app-packages@1.0.1
+steeve:jquery-qrcode@0.2.0
 templating@1.0.5
 tracker@1.0.2
 ui@1.0.2

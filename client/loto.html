@@ -249,6 +249,7 @@
         <div class="collapse navbar-collapse">
         	{{# if currentUser}}
           		<a href="/logout" class="navbar-btn btn btn-theme-primary pull-right hidden-sm hidden-xs">Logout</a>
+                <h5><a href="/deposit" class="navbar-btn btn btn-theme-default pull-right hidden-sm hidden-xs">Your balance: {{$.Session.get 'balanceBitcoins'}}<i class="fa fa-bitcoin"></i> {{$.Session.get 'balanceTickets'}}<i class="fa fa-ticket"></i></a></h5>
 	        {{else}}
 	          <a href="/login" class="navbar-btn btn btn-theme-primary pull-right hidden-sm hidden-xs">Sign In</a>
 			{{/if}}
@@ -402,8 +403,9 @@
 	<div class="col-md-6">
 		<h3>Deposit</h3>
 		<h4>Your deposit address is:</h4>
-		<span>{{currentUser.profile.address}}</span>
-		<h6>Note: deposit address never changes, you could add it to bookmarks</h6>
+		<span class="bitcoin-address"><h4><strong>{{currentUser.profile.address}}</strong></h4></span>
+        <div id="qr"></div>
+		<h6><em>Note: deposit address never changes, you could add it to bookmarks</em></h6>
 	</div>
 </div>
 </div>
@@ -459,8 +461,8 @@
 <div class="row">
 	<div class="col-md-6">
 		<h3>Affilate</h3>
-		<h4>Place this url and get bonus for every registery man: </h4>
-		<div>{{url}}</div>
+		<h4>Get bonus for new every new registered player: </h4>
+		<div><h4><strong>{{url}}</strong></h4></div>
 	</div>
 </div>
 </div>	
