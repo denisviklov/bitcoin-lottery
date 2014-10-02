@@ -37,6 +37,21 @@ if (Meteor.isClient) {
     },
   });
 
+  Template.game.events({
+    'click #buy-ticket': function(event){
+      //buy ticket functional there
+      if(Session.get('ticket').length != 5)
+        Notifications.warn('warning', 'Ticket must contains 5 digits');
+        //showAlert({alertClass: 'warning', txt: 'Ticket should contain 5 digits'});
+      else{
+        Meteor.call('buyTicket', Session.get('ticket'), function(err, res){
+          if(res)
+            console.log(res);
+        })
+      }
+    },
+  });
+
   Template.gameField.field = function(){
         //var type = '5/36';
         //console.log(Session.get("gameType"));
@@ -101,15 +116,6 @@ if (Meteor.isClient) {
         $(event.currentTarget).attr('touse', 'false');
         ticket = find_and_delete(ticket, $(event.currentTarget).text());
         Session.set('ticket', ticket);
-      }
-    },
-    'click #buy-ticket': function(event){
-      //buy ticket functional there
-      if(Session.get('ticket').length != 5)
-        Notifications.warn('warning', 'Ticket must contains 5 digits');
-        //showAlert({alertClass: 'warning', txt: 'Ticket should contain 5 digits'});
-      else{
-        //call backend method
       }
     },
   });

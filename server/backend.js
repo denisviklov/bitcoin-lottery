@@ -5,6 +5,7 @@ LastWins = new Meteor.Collection('lastwins');
 PromoCodes = new Meteor.Collection('promocodes');
 Settings = new Meteor.Collection('settings');
 History = new Meteor.Collection('history');
+Tickets = new Meteor.Collection('tickets');
 
 //------------------capped collectios
 var userQuery = LastRegisteredUsers.find({});
@@ -53,8 +54,10 @@ var winsHandler = winsQuery.observeChanges({
 Meteor.startup(function(){
 	if(!Jackpot.findOne())
 		Jackpot.insert({value: 1000});
-	if(!Settings.findOne())
+	if(!Settings.findOne()){
 		Settings.insert({gameType: {num: 5, from: 36}});
+		Settings.insert({ticket_price: 0.00000001});
+	}
 	//settings
 	if(!process.env.MAIL_URL)
   		process.env.MAIL_URL = 'smtp://postmaster%40bitcoinlottery.rocks:81d80b0d2449e1cdff907e8f6ad761b5@smtp.mailgun.org:587';
@@ -129,6 +132,32 @@ Meteor.methods({
 	getBalance: function(){
 		return Meteor.user().balance;
 	},
+	buyTicket: function(ticket){
+		var insertTicket = function(userId, ticket){
+			Tickets.insert({userId: userId, combination: ticket,
+				date: new Date(), is_used: false});
+			return true;
+		};
+
+		var balance = Meteor.user().balance;
+		if(Meteor.user().balance.bitcoins){
+			//do smth with coins
+			if(Meteor.user().balance.bitcoins > Settings.ticket_price){
+				Meteor.users.update(Meteor.userId(),
+					{$set: {balance: {bitcoins: Meteor.user().balance.bitcoins - Settings.ticket_price}}});
+				insertTicket(Meteor.userId(), ticket);
+				return {status: 'success', msg: 'Your have bought a ticket'};
+			}else{}
+		}
+		if(Meteor.user().balance.tickets){
+			//do with tickets
+			Meteor.users.update(Meteor.userId(),
+				{$set: {balance: {bitcoins: Meteor.user().balance.tickets - 1}}});
+			insertTicket(Meteor.userId(), ticket);
+			return {status: 'success', msg: 'Your have bought a ticket'};
+		}
+		return {status: 'error', msg: 'Insuffucient funds'};
+	}
 });
 
 
