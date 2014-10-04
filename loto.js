@@ -22,10 +22,24 @@ if (Meteor.isClient) {
   Meteor.subscribe('history');
   var History = new Meteor.Collection('history');
 
+  Meteor.subscribe("userData");
+  var UserData = new Meteor.Collection('userdata');
+
+  Meteor.subscribe("countdown", function(){
+    Session.set('sqstamp', true);    
+  });
+  var SeqTimestamp = new Meteor.Collection('sqstamp');
 
   Template.navBar.jackpot = function(){
     return Jackpot.findOne({});
   };
+
+  Template.navBar.balance = function(){
+    if(Meteor.user().balance)
+      return Meteor.user().balance;
+    else
+      return {bitcoins: 0, tickets: 0};
+  };  
 
   Template.layout.jackpot = function(){
     return Jackpot.findOne({});
@@ -36,6 +50,15 @@ if (Meteor.isClient) {
       return String(jackpot).slice(0, 7);
     },
   });
+
+ /* Template.game.counter = function(){
+    if(Session.get('sqstamp')){
+      console.log(SeqTimestamp.findOne({}));
+      var time = SeqTimestamp.findOne({});
+      $('.countdown').countdown({date: new Date});
+      return true;      
+    }
+  };*/
 
   Template.game.events({
     'click #buy-ticket': function(event){
@@ -60,9 +83,7 @@ if (Meteor.isClient) {
         //settings.gameType.num = 5;
         //settings.gameType.from = 36;
         var z = 1;
-        console.log(Settings.find().fetch())
         var setting = Settings.find().fetch()[0];
-        console.log(setting);
         for(i=0; i<setting.gameType.num; i++){
           field+="<tr>";
           for(j=0; j<parseInt(setting.gameType.from/setting.gameType.num) && z<=setting.gameType.from; j++){
@@ -75,8 +96,8 @@ if (Meteor.isClient) {
         return field;  
       };
 
-  Template.gameField.ticket = function(){
-    return Session.get('ticket')
+  Template.game.ticket = function(){
+    return Session.get('ticket');
   };
 
   var find_and_delete = function(arr, el){
@@ -250,7 +271,7 @@ if (Meteor.isClient) {
   Template.deposit.rendered = function(){
     Meteor.call('getBitcoinAddress', function(err, res){
       if(res){
-        console.log(res);
+        //console.log(res);
         $('#qr').qrcode({text: res,width: 150,height: 150,});
         }
       });

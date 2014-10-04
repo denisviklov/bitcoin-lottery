@@ -212,13 +212,14 @@
 	<div class="container">
 		<div class="row">
             <div class="md-col-12">
-             <h4>Choice 5 numbers</h4>
-        
-            {{> gameField}}
-            <div class="col-md-6">
-                <h3>Your ticket: {{ticket}}</h3>
-                <p><button id="buy-ticket" type="button" class="btn btn-success">Buy ticket 0.02&#3647;</button></p>
-            </div>
+                 <h4>Choice 5 numbers</h4>
+            
+                {{> gameField}}
+                <div class="col-md-6">
+                    <h3>Your ticket: {{ticket}}</h3>
+                    <p><button id="buy-ticket" type="button" class="btn btn-success">Buy ticket 0.02&#3647;</button></p>
+                    {{counter}}<div class="countdown"></div>
+                </div>
             </div>
 		</div>
 	</div>
@@ -249,7 +250,7 @@
         <div class="collapse navbar-collapse">
         	{{# if currentUser}}
           		<a href="/logout" class="navbar-btn btn btn-theme-primary pull-right hidden-sm hidden-xs">Logout</a>
-                <h5><a href="/deposit" class="navbar-btn btn btn-theme-default pull-right hidden-sm hidden-xs">Your balance: {{$.Session.get 'balanceBitcoins'}}<i class="fa fa-bitcoin"></i> {{$.Session.get 'balanceTickets'}}<i class="fa fa-ticket"></i></a></h5>
+                <h5><a href="/deposit" class="navbar-btn btn btn-theme-default pull-right hidden-sm hidden-xs">Your balance: {{#with balance}}{{bitcoins}}<i class="fa fa-bitcoin"></i> {{tickets}}{{/with}}<i class="fa fa-ticket"></i></a></h5>
 	        {{else}}
 	          <a href="/login" class="navbar-btn btn btn-theme-primary pull-right hidden-sm hidden-xs">Sign In</a>
 			{{/if}}

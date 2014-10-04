@@ -6,6 +6,18 @@ PromoCodes = new Meteor.Collection('promocodes');
 Settings = new Meteor.Collection('settings');
 History = new Meteor.Collection('history');
 Tickets = new Meteor.Collection('tickets');
+Sequences = new Meteor.Collection('sequences');
+SeqTimestamp = new Meteor.Collection('seqtimestamp');
+
+
+Meteor.publish("userData", function () {
+  if (this.userId) {
+    return Meteor.users.find({_id: this.userId},
+                             {fields: {'balance': 1}});
+  } else {
+    this.ready();
+  }
+});
 
 //------------------capped collectios
 var userQuery = LastRegisteredUsers.find({});
@@ -58,6 +70,8 @@ Meteor.startup(function(){
 		Settings.insert({gameType: {num: 5, from: 36}});
 		Settings.insert({ticket_price: 0.00000001});
 	}
+	if(!SeqTimestamp.findOne())
+		SeqTimestamp.insert({lasttime: new Date})
 	//settings
 	if(!process.env.MAIL_URL)
   		process.env.MAIL_URL = 'smtp://postmaster%40bitcoinlottery.rocks:81d80b0d2449e1cdff907e8f6ad761b5@smtp.mailgun.org:587';
@@ -101,6 +115,10 @@ Meteor.publish('history', function(){
 	return History.find({user_id: this.userId});
 });
 
+Meteor.publish('countdown', function(){
+	return SeqTimestamp.find({});
+});
+
 Meteor.methods({
 	sendVerificationEmail: function(){
 		Accounts.sendVerificationEmail(Meteor.userId());
@@ -142,9 +160,10 @@ Meteor.methods({
 		var balance = Meteor.user().balance;
 		if(Meteor.user().balance.bitcoins){
 			//do smth with coins
-			if(Meteor.user().balance.bitcoins > Settings.ticket_price){
+			if(Meteor.user().balance.bitcoins > Settings.findOne().ticket_price){
 				Meteor.users.update(Meteor.userId(),
-					{$set: {balance: {bitcoins: Meteor.user().balance.bitcoins - Settings.ticket_price}}});
+					{$set: {balance: {bitcoins: Meteor.user().balance.bitcoins - Settings.findOne().ticket_price,
+						tickets: balance.tickets}}});
 				insertTicket(Meteor.userId(), ticket);
 				return {status: 'success', msg: 'Your have bought a ticket'};
 			}else{}
@@ -152,7 +171,8 @@ Meteor.methods({
 		if(Meteor.user().balance.tickets){
 			//do with tickets
 			Meteor.users.update(Meteor.userId(),
-				{$set: {balance: {bitcoins: Meteor.user().balance.tickets - 1}}});
+				{$set: {balance: {tickets: Meteor.user().balance.tickets - 1,
+					bitcoins: balance.tickets}}});
 			insertTicket(Meteor.userId(), ticket);
 			return {status: 'success', msg: 'Your have bought a ticket'};
 		}

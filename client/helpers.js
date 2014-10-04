@@ -12,7 +12,12 @@ function dateFormat(d){
 function activeTab(){
     Session.get('activeTab');
     return 'class="active"'
-}
+};
+
+function getSession(key){
+    return Session.get(key);
+};
 
 Handlebars.registerHelper('dateFormat', dateFormat);
+Handlebars.registerHelper('getSession', getSession);
 

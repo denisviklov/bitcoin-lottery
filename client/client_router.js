@@ -10,7 +10,7 @@ Router.configure({
       $('body').removeClass('coming-soon');
       Meteor.call('getBalance', function(err, res){
         if(res){
-          console.log(res);    
+          //console.log(res);    
           Session.set('balanceBitcoins', res.bitcoins);
           Session.set('balanceTickets', res.tickets);
         }
