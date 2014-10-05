@@ -46,4 +46,4 @@ function startDraw(){
     }
 };
 
-Meteor.setInterval(startDraw, 15000);
+//Meteor.setInterval(startDraw, 15000);
