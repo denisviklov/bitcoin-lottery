@@ -4,7 +4,7 @@ function performWins(ticketId){
     var ticketPrice = Settings.findOne().ticket_price;
     var earned = 0;
 
-    switch(ticket.wins){
+    switch(ticket.win){
         case 2:
             earned = ticketPrice
             break
@@ -20,12 +20,16 @@ function performWins(ticketId){
     }
 
     History.insert({action: 'win', txt: 'Your won ' + earned, date: new Date()});
-    Meteor.users.update(ticket.userId, {$set: {balance: {bitcoins: user.balance.bitcoins + earned,
-    tickets: user.balance.tickets}}});
+    Meteor.users.update(ticket.userId,
+        {
+            $set: {balance: {bitcoins: user.balance.bitcoins + earned, tickets: user.balance.tickets}},
+            $push:{'profile.messages': {id: Mongo.ObjectID(), txt: 'You predicted ' + ticket.win + ' and win ' + earned}}
+        });
     return true;
 };
 
 function startDraw(){
+    console.log('start draw');
     SeqTimestamp.update({}, {lasttime: new Date});
     var url = "http://www.random.org/sequences/?min=1&max=36&col=36&format=plain&rnd=new";
     resp = HTTP.get(url);
@@ -46,4 +50,4 @@ function startDraw(){
     }
 };
 
-//Meteor.setInterval(startDraw, 15000);
+//Meteor.setInterval(startDraw, 60000);

@@ -10,15 +10,6 @@ Sequences = new Meteor.Collection('sequences');
 SeqTimestamp = new Meteor.Collection('seqtimestamp');
 
 
-Meteor.publish("userData", function () {
-  if (this.userId) {
-    return Meteor.users.find({_id: this.userId},
-                             {fields: {'balance': 1}});
-  } else {
-    this.ready();
-  }
-});
-
 //------------------capped collectios
 var userQuery = LastRegisteredUsers.find({});
 var userHandler = userQuery.observeChanges({
@@ -90,6 +81,16 @@ Social credentials
 { "service" : "facebook", "appId" : "1936365749835664", "secret" : "810703d3cbce79ab3218f5d6270e38f6"}
 { "service" : "google", "clientId" : "240654706988-edvgfd4cg6gakobtdfsothc8gc1nunu1.apps.googleusercontent.com", "secret" : "MAmS_D6WlR8wWevxoLbPGlQb"}
 */
+
+//----- publishings
+Meteor.publish("userData", function () {
+  if (this.userId) {
+    return Meteor.users.find({_id: this.userId},
+                             {fields: {'balance': 1}});
+  } else {
+    this.ready();
+  }
+});
 
 Meteor.publish('jackpotPub', function(){
 	return Jackpot.find({});
@@ -177,6 +178,11 @@ Meteor.methods({
 			return {status: 'success', msg: 'Your have bought a ticket'};
 		}
 		return {status: 'error', msg: 'Insuffucient funds'};
+	},
+	getCountdown: function(){
+		var minutes = 1;
+		var count = SeqTimestamp.findOne().lasttime;
+		return count.setMinutes(count.getMinutes() + minutes);
 	}
 });
 

@@ -28,7 +28,7 @@ if (Meteor.isClient) {
   Meteor.subscribe("countdown", function(){
     Session.set('sqstamp', true);    
   });
-  var SeqTimestamp = new Meteor.Collection('sqstamp');
+  var SeqTimestamp = new Meteor.Collection('countdown');
 
   Template.navBar.jackpot = function(){
     return Jackpot.findOne({});
@@ -51,14 +51,30 @@ if (Meteor.isClient) {
     },
   });
 
- /* Template.game.counter = function(){
-    if(Session.get('sqstamp')){
-      console.log(SeqTimestamp.findOne({}));
-      var time = SeqTimestamp.findOne({});
-      $('.countdown').countdown({date: new Date});
-      return true;      
+  Template.layout.msg = function(){
+    if(Meteor.user()){
+      var messages = Meteor.user().profile.messages;
+      _.each(messages, function(element, index, list){
+        Notifications.info('warning', element.txt);
+        Meteor.users.update( { _id: Meteor.userId() }, { $pull: { 'profile.messages': element.id}} );
+      });
     }
-  };*/
+  }
+
+  Template.game.counter = function(){
+    var cc = function(){
+    Meteor.call('getCountdown', function(err, data){
+      console.log(data);
+      $('.countdown').countdown({date: data, template: '%i %s',
+        onComplete: function(){
+          $('.countdown').countdown('destroy');
+          cc();
+        },
+      });
+    })
+    };
+    //cc();
+  }
 
   Template.game.events({
     'click #buy-ticket': function(event){
@@ -68,8 +84,15 @@ if (Meteor.isClient) {
         //showAlert({alertClass: 'warning', txt: 'Ticket should contain 5 digits'});
       else{
         Meteor.call('buyTicket', Session.get('ticket'), function(err, res){
-          if(res)
-            console.log(res);
+          if(res){
+            $('.fill_cell').removeClass('fill_cell');
+            $('.on_cell').removeClass('on_cell');
+            Session.set('ticket', []);
+            if(res.status == 'success')
+              Notifications.success('Success', res.msg);
+            else
+              Notifications.error('Error', res.msg)
+          }
         })
       }
     },
@@ -113,11 +136,13 @@ if (Meteor.isClient) {
   Template.gameField.events({
     'mouseenter .ticket': function(event){
       if($(event.currentTarget).attr('touse') == 'false')
-        $(event.currentTarget).attr('bgcolor', '#c0c0c0');
+        //$(event.currentTarget).attr('bgcolor', '#c0c0c0');
+        $(event.currentTarget).addClass('on_cell');
     },
     'mouseleave .ticket': function(event){
       if($(event.currentTarget).attr('touse') == 'false'){
-        $(event.currentTarget).attr('bgcolor', '#ffffff');
+        //$(event.currentTarget).attr('bgcolor', '#ffffff');
+        $(event.currentTarget).removeClass('on_cell');
       }
     },
     'click .ticket': function(event){
@@ -129,11 +154,13 @@ if (Meteor.isClient) {
         else{
           ticket.push($(event.currentTarget).text());
           Session.set('ticket', ticket);
-          $(event.currentTarget).attr('bgcolor', '#008000');
+          //$(event.currentTarget).attr('bgcolor', '#008000');
+          $(event.currentTarget).addClass('fill_cell');
           $(event.currentTarget).attr('touse', 'true');
         }
       }else{
-        $(event.currentTarget).attr('bgcolor', '#ffffff');
+        //$(event.currentTarget).attr('bgcolor', '#ffffff');
+        $(event.currentTarget).removeClass('fill_cell');
         $(event.currentTarget).attr('touse', 'false');
         ticket = find_and_delete(ticket, $(event.currentTarget).text());
         Session.set('ticket', ticket);
