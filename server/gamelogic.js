@@ -18,12 +18,12 @@ function performWins(ticketId){
             earned = Jackpot.findOne().value
             break 
     }
-
-    History.insert({action: 'win', txt: 'Your won ' + earned, date: new Date()});
+    if(ticket.win > 1)
+        History.insert({action: 'win', txt: 'Your won ' + earned, date: new Date(), user_id: user._id});
     Meteor.users.update(ticket.userId,
         {
             $set: {balance: {bitcoins: user.balance.bitcoins + earned, tickets: user.balance.tickets}},
-            $push:{'profile.messages': {id: Mongo.ObjectID(), txt: 'You predicted ' + ticket.win + ' and win ' + earned}}
+            $push:{'profile.messages': {id: new Mongo.ObjectID()._str, txt: 'You predicted ' + ticket.win + ' and win ' + earned}}
         });
     return true;
 };

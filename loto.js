@@ -56,7 +56,7 @@ if (Meteor.isClient) {
       var messages = Meteor.user().profile.messages;
       _.each(messages, function(element, index, list){
         Notifications.info('warning', element.txt);
-        Meteor.users.update( { _id: Meteor.userId() }, { $pull: { 'profile.messages': element.id}} );
+        Meteor.users.update( { _id: Meteor.userId() }, { $pull: { 'profile.messages': {id: element.id}}} );
       });
     }
   }
@@ -65,15 +65,20 @@ if (Meteor.isClient) {
     var cc = function(){
     Meteor.call('getCountdown', function(err, data){
       console.log(data);
-      $('.countdown').countdown({date: data, template: '%i %s',
+      $('.countdown').countdown({date: data,
+        //timeWrapElement: 'span',
+        //textWrapElement: 'span',
+        //timeWrapClass: 'countdown-amount',
+        //textWrapClass: 'countdown-period',
+        template: '%i %s',
         onComplete: function(){
           $('.countdown').countdown('destroy');
-          cc();
+          //cc();
         },
       });
     })
     };
-    //cc();
+    cc();
   }
 
   Template.game.events({
@@ -87,6 +92,7 @@ if (Meteor.isClient) {
           if(res){
             $('.fill_cell').removeClass('fill_cell');
             $('.on_cell').removeClass('on_cell');
+            $('td[touse="true"]').attr('touse', false);
             Session.set('ticket', []);
             if(res.status == 'success')
               Notifications.success('Success', res.msg);

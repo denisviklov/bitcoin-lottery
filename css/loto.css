@@ -7,6 +7,6 @@
 th {font-size: 1.2em;}
 .table__caption{font-size: 2em;}
 .notes {color: #F00000;}
-tr {background-color: white;}
+/*tr {background-color: white;}*/
 .on_cell{background-color: #c0c0c0;}
 .fill_cell{background-color: #9bc949;}
