@@ -173,7 +173,7 @@ Meteor.methods({
 			//do with tickets
 			Meteor.users.update(Meteor.userId(),
 				{$set: {balance: {tickets: Meteor.user().balance.tickets - 1,
-					bitcoins: balance.tickets}}});
+					bitcoins: balance.bitcoins}}});
 			insertTicket(Meteor.userId(), ticket);
 			return {status: 'success', msg: 'Your have bought a ticket'};
 		}
