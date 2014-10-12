@@ -16,7 +16,7 @@ Accounts.onCreateUser(function(options, user){
 		user.username = options.profile.name
 	user.profile = options;
 	user.profile = {address: ''};
-	user.balance = {bitcoins: 0, tickets: 0};
+	user.balance = {bitcoins: 0, tickets: 1};
 	return user;
 });
 
