@@ -73,7 +73,7 @@ if (Meteor.isClient) {
         template: '%i %s',
         onComplete: function(){
           $('.countdown').countdown('destroy');
-          //cc();
+          cc();
         },
       });
     })

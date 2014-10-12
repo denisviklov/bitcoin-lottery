@@ -180,7 +180,7 @@ Meteor.methods({
 		return {status: 'error', msg: 'Insuffucient funds'};
 	},
 	getCountdown: function(){
-		var minutes = 1;
+		var minutes = 5;
 		var count = SeqTimestamp.findOne().lasttime;
 		return count.setMinutes(count.getMinutes() + minutes);
 	}

@@ -50,4 +50,4 @@ function startDraw(){
     }
 };
 
-//Meteor.setInterval(startDraw, 60000);
+Meteor.setInterval(startDraw, 5*60000);
