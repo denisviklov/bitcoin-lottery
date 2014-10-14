@@ -8,6 +8,7 @@ Router.configure({
       $('body').addClass('coming-soon');
     if(Meteor.user()){
       $('body').removeClass('coming-soon');
+      Router.go('game');
       Meteor.call('getBalance', function(err, res){
         if(res){
           //console.log(res);    
